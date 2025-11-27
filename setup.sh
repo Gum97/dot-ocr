@@ -39,12 +39,23 @@ python3 << 'EOF'
 from huggingface_hub import snapshot_download
 
 print("Downloading model from HuggingFace Hub...")
-snapshot_download(
-    repo_id='rednote-hilab/DotsOCR',
-    local_dir='./weights/DotsOCR',
-    local_dir_use_symlinks=False
-)
-print("✓ Model downloaded successfully!")
+print("This may require HuggingFace login if model is gated...")
+
+try:
+    snapshot_download(
+        repo_id='rednote-hilab/dots.ocr',  # Correct repo name
+        local_dir='./weights/DotsOCR',
+        local_dir_use_symlinks=False,
+        ignore_patterns=["*.bin"]  # Skip large checkpoint files if needed
+    )
+    print("✓ Model downloaded successfully!")
+except Exception as e:
+    print(f"⚠️  Model download failed: {e}")
+    print("\nAlternative: Download manually from:")
+    print("https://huggingface.co/rednote-hilab/dots.ocr")
+    print("\nOr use direct URL (if available):")
+    print("You may need to accept license agreement on HuggingFace first.")
+    exit(1)
 EOF
 
 echo ""

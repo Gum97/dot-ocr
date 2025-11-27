@@ -50,6 +50,8 @@ class LayoutElement(BaseModel):
 
 class ProcessResponse(BaseModel):
     """Response from processing"""
+    model_config = {'protected_namespaces': ()}  # Allow model_ prefix
+    
     task_id: str
     status: ProcessingStatus
     file_type: FileType
@@ -86,6 +88,8 @@ class TaskStatusResponse(BaseModel):
 
 class HealthResponse(BaseModel):
     """Health check response"""
+    model_config = {'protected_namespaces': ()}  # Allow model_ prefix
+    
     status: str
     version: str
     device: str
