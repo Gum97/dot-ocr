@@ -1,0 +1,13 @@
+# GPU-specific requirements
+# Use this for GPU Docker image (Dockerfile.gpu)
+
+# All base requirements
+PyMuPDF
+qwen_vl_utils
+transformers==4.51.3
+huggingface_hub
+modelscope
+accelerate
+
+# GPU-specific packages
+flash-attn==2.8.0.post2  # Requires CUDA

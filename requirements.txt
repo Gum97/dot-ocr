@@ -1,11 +1,8 @@
-# streamlit 
-gradio
-gradio_image_annotation
+# Core dependencies for dots.ocr
 PyMuPDF
-openai
 qwen_vl_utils
 transformers==4.51.3
 huggingface_hub
 modelscope
-flash-attn==2.8.0.post2
+# flash-attn==2.8.0.post2  # Only for GPU, removed for CPU compatibility
 accelerate

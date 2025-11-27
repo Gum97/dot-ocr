@@ -33,8 +33,15 @@ temp/
 Thumbs.db
 
 # Documentation (not needed in container)
-*.md
-!README_API.md
+DOCKER_FIX.md
+DOCKER_GUIDE.md
+API_DOCUMENTATION.md
+WEB_SETUP.md
+
+# Build scripts (not needed in container)
+docker-build.sh
+docker-build.bat
+quick-deploy.ps1
 
 # Artifacts
 C:/Users/admin/.gemini/
