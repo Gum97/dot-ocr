@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  # CPU version
+  dots-ocr-api-cpu:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dots-ocr-api-cpu
+    ports:
+      - "8000:8000"
+    volumes:
+      # Model weights (download once, reuse)
+      - ./weights:/app/weights
+      # Data directories
+      - ./uploads:/app/uploads
+      - ./results:/app/results
+      - ./temp:/app/temp
+    environment:
+      - DEVICE=cpu
+      - DEBUG=false
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # GPU version (requires nvidia-docker)
+  dots-ocr-api-gpu:
+    build:
+      context: .
+      dockerfile: Dockerfile.gpu
+    container_name: dots-ocr-api-gpu
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./weights:/app/weights
+      - ./uploads:/app/uploads
+      - ./results:/app/results
+      - ./temp:/app/temp
+    environment:
+      - DEVICE=auto
+      - DEBUG=false
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    profiles:
+      - gpu
+
+  # Web interface (optional, serves static files)
+  dots-ocr-web:
+    image: nginx:alpine
+    container_name: dots-ocr-web
+    ports:
+      - "3000:80"
+    volumes:
+      - ./web:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - dots-ocr-api-cpu
+    restart: unless-stopped
+    profiles:
+      - web

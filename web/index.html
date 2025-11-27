@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dots.ocr - Intelligent Document Processing</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>🔍 dots.ocr</h1>
+                <p class="tagline">Intelligent Document Processing</p>
+            </div>
+            <nav class="nav">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#demo" class="nav-link">Demo</a>
+                <a href="http://localhost:8000/docs" target="_blank" class="nav-link">API Docs</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2 class="hero-title">Chuyển đổi tài liệu thành dữ liệu có cấu trúc</h2>
+                <p class="hero-subtitle">
+                    Hỗ trợ PDF, Image, DOCX • 100+ ngôn ngữ • CPU & GPU • AI-powered
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">100+</div>
+                        <div class="stat-label">Ngôn ngữ</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">SOTA</div>
+                        <div class="stat-label">Performance</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">1.7B</div>
+                        <div class="stat-label">Parameters</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Tính năng nổi bật</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Auto-detect File Type</h3>
+                    <p>Tự động nhận diện PDF, Image, DOC, DOCX và chuyển đổi khi cần</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3>Smart Conversion</h3>
+                    <p>Chuyển đổi DOCX → PDF tự động trước khi xử lý OCR</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3>Layout Detection</h3>
+                    <p>Phát hiện bảng, công thức, text, và cấu trúc tài liệu</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <h3>Multilingual</h3>
+                    <p>Hỗ trợ hơn 100 ngôn ngữ bao gồm tiếng Việt</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>CPU & GPU</h3>
+                    <p>Tự động phát hiện và sử dụng GPU nếu có sẵn</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Multiple Prompts</h3>
+                    <p>4 chế độ xử lý: Full, Layout Only, OCR Only, Grounding</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section id="demo" class="demo">
+        <div class="container">
+            <h2 class="section-title">Thử ngay</h2>
+            
+            <!-- Upload Area -->
+            <div class="upload-section">
+                <div class="upload-area" id="uploadArea">
+                    <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png,.docx,.doc" hidden>
+                    <div class="upload-icon">📤</div>
+                    <h3>Kéo thả file hoặc click để chọn</h3>
+                    <p>Hỗ trợ: PDF, JPG, PNG, DOCX, DOC (max 50MB)</p>
+                    <button class="btn btn-primary" id="selectFileBtn">Chọn file</button>
+                </div>
+
+                <!-- File Preview -->
+                <div class="file-preview" id="filePreview" style="display: none;">
+                    <div class="file-info">
+                        <span class="file-name" id="fileName"></span>
+                        <span class="file-size" id="fileSize"></span>
+                        <button class="btn-close" id="removeFileBtn">✕</button>
+                    </div>
+                </div>
+
+                <!-- Settings -->
+                <div class="settings">
+                    <div class="setting-group">
+                        <label for="promptMode">Prompt Mode:</label>
+                        <select id="promptMode" class="select-input">
+                            <option value="prompt_layout_all_en">Full Layout + OCR</option>
+                            <option value="prompt_layout_only_en">Layout Detection Only</option>
+                            <option value="prompt_ocr">OCR Text Only</option>
+                            <option value="prompt_grounding_ocr">Grounding OCR (with bbox)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label>
+                            <input type="checkbox" id="fitzPreprocess" checked>
+                            Enable Fitz Preprocess (for images)
+                        </label>
+                    </div>
+
+                    <div class="setting-group" id="bboxGroup" style="display: none;">
+                        <label for="bbox">Bounding Box (x1,y1,x2,y2):</label>
+                        <input type="text" id="bbox" class="text-input" placeholder="e.g., 163,241,1536,705">
+                    </div>
+                </div>
+
+                <!-- Process Button -->
+                <button class="btn btn-success btn-large" id="processBtn" disabled>
+                    🚀 Xử lý ngay
+                </button>
+            </div>
+
+            <!-- Progress -->
+            <div class="progress-section" id="progressSection" style="display: none;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <p class="progress-text" id="progressText">Đang xử lý...</p>
+            </div>
+
+            <!-- Results -->
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <h3>Kết quả</h3>
+                
+                <!-- Result Info -->
+                <div class="result-info" id="resultInfo"></div>
+
+                <!-- Tabs -->
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="markdown">Markdown</button>
+                    <button class="tab-btn" data-tab="layout">Layout</button>
+                    <button class="tab-btn" data-tab="json">JSON</button>
+                </div>
+
+                <!-- Tab Contents -->
+                <div class="tab-content active" id="markdownTab">
+                    <div class="markdown-preview" id="markdownPreview"></div>
+                </div>
+
+                <div class="tab-content" id="layoutTab">
+                    <img id="layoutImage" alt="Layout visualization" style="max-width: 100%;">
+                </div>
+
+                <div class="tab-content" id="jsonTab">
+                    <pre id="jsonPreview"></pre>
+                </div>
+
+                <!-- Download Button -->
+                <button class="btn btn-primary" id="downloadBtn">
+                    ⬇️ Tải kết quả
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>dots.ocr API v1.0.0 | Made with ❤️ by rednote-hilab</p>
+            <p>
+                <a href="https://github.com/rednote-hilab/dots.ocr" target="_blank">GitHub</a> •
+                <a href="http://localhost:8000/docs" target="_blank">API Documentation</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
