@@ -55,11 +55,12 @@ class OCRService:
                 )
             else:
                 # Use HuggingFace Transformers (works on CPU)
+                # Note: model_path is hardcoded in DotsOCRParser._load_hf_model() as "./weights/DotsOCR"
                 self.parser = DotsOCRParser(
-                    model_path=settings.MODEL_PATH,
                     dpi=settings.DPI,
                     min_pixels=settings.MIN_PIXELS,
                     max_pixels=settings.MAX_PIXELS,
+                    output_dir=str(settings.RESULTS_DIR),
                     use_hf=True  # Use HuggingFace backend
                 )
             
