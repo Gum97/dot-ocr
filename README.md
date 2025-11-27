@@ -92,15 +92,15 @@ docker-compose --profile gpu up -d dots-ocr-api-gpu
 
 ```bash
 # Install Python dependencies
-pip install -r requirements.txt
-pip install -r api_requirements.txt
+pip3 install -r requirements.txt
+pip3 install -r api_requirements.txt
 
 # Install PyTorch (choose based on your hardware)
 # For CPU:
-pip install torch==2.4.0 torchvision==0.19.0 --index-url https://download.pytorch.org/whl/cpu
+pip3 install torch==2.4.0 torchvision==0.19.0 --index-url https://download.pytorch.org/whl/cpu
 
 # For GPU (CUDA 12.1):
-pip install torch==2.4.0 torchvision==0.19.0 --index-url https://download.pytorch.org/whl/cu121
+pip3 install torch==2.4.0 torchvision==0.19.0 --index-url https://download.pytorch.org/whl/cu121
 ```
 
 #### Step 2: Download Model
@@ -110,17 +110,34 @@ pip install torch==2.4.0 torchvision==0.19.0 --index-url https://download.pytorc
 mkdir -p weights
 
 # Download model (~3.5GB)
-python -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='rednote-hilab/DotsOCR', local_dir='./weights/DotsOCR', local_dir_use_symlinks=False)"
+python3 << 'EOF'
+from huggingface_hub import snapshot_download
+snapshot_download(
+    repo_id='rednote-hilab/DotsOCR',
+    local_dir='./weights/DotsOCR',
+    local_dir_use_symlinks=False
+)
+EOF
+```
+
+**Or use automated setup script:**
+
+```bash
+# Make executable
+chmod +x setup.sh
+
+# Run setup
+./setup.sh
 ```
 
 #### Step 3: Run API
 
 ```bash
 # Start API server
-python scripts/run_api.py
+python3 scripts/run_api.py
 
 # Or with custom settings
-python scripts/run_api.py --host 0.0.0.0 --port 8000 --reload
+python3 scripts/run_api.py --host 0.0.0.0 --port 8000 --reload
 ```
 
 #### Step 4: Run Web Interface (Optional)
@@ -128,7 +145,7 @@ python scripts/run_api.py --host 0.0.0.0 --port 8000 --reload
 ```bash
 # Open new terminal
 cd web
-python -m http.server 3000
+python3 -m http.server 3000
 ```
 
 **Access:**

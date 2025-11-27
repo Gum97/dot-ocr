@@ -48,19 +48,31 @@ docker-compose --profile web up -d
 ## 💻 Method 3: Local Development
 
 ```bash
-# Bước 1: Install dependencies
-pip install -r requirements.txt
-pip install -r api_requirements.txt
-pip install torch==2.4.0 torchvision==0.19.0 --index-url https://download.pytorch.org/whl/cpu
+# Bước 1: Install dependencies (Ubuntu/Linux)
+pip3 install -r requirements.txt
+pip3 install -r api_requirements.txt
+pip3 install torch==2.4.0 torchvision==0.19.0 --index-url https://download.pytorch.org/whl/cpu
 
-# Bước 2: Download model
-python -c "from huggingface_hub import snapshot_download; snapshot_download('rednote-hilab/DotsOCR', './weights/DotsOCR', local_dir_use_symlinks=False)"
+# Bước 2: Download model (automated script)
+chmod +x setup.sh
+./setup.sh
+
+# OR manual download:
+mkdir -p weights
+python3 << 'EOF'
+from huggingface_hub import snapshot_download
+snapshot_download(
+    repo_id='rednote-hilab/DotsOCR',
+    local_dir='./weights/DotsOCR',
+    local_dir_use_symlinks=False
+)
+EOF
 
 # Bước 3: Run API
-python scripts/run_api.py
+python3 scripts/run_api.py
 
 # Bước 4 (Optional): Run Web
-cd web && python -m http.server 3000
+cd web && python3 -m http.server 3000
 ```
 
 **✅ Xong! Chạy local.**
