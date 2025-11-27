@@ -39,6 +39,10 @@ RUN pip install -e .
 # Create directories for data
 RUN mkdir -p /app/weights /app/uploads /app/results /app/temp
 
+# Copy entrypoint script
+COPY docker-entrypoint.sh /app/
+RUN chmod +x /app/docker-entrypoint.sh
+
 # Expose port
 EXPOSE 8000
 
@@ -50,6 +54,9 @@ ENV MODEL_PATH=/app/weights/DotsOCR
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
     CMD curl -f http://localhost:8000/api/v1/health || exit 1
+
+# Set entrypoint
+ENTRYPOINT ["/app/docker-entrypoint.sh"]
 
 # Run the API
 CMD ["python", "scripts/run_api.py", "--host", "0.0.0.0", "--port", "8000"]
